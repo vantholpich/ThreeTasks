@@ -15,7 +15,7 @@ export default function ToDoScreen() {
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>To-Do</Text>
+                    <Text style={styles.title}>Three to-dos</Text>
                 </View>
 
                 <View style={styles.tasksWrapper}>

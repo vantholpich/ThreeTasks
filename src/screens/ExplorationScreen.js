@@ -15,8 +15,8 @@ export default function ExplorationScreen() {
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Exploration</Text>
-                    <Text style={styles.subtitle}>Extra tasks for later.</Text>
+                    <Text style={styles.title}>More to-dos</Text>
+                    <Text style={styles.subtitle}>Extra to-dos after finishing the main to-dos.</Text>
                 </View>
 
                 <View style={styles.tasksWrapper}>

@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     completedText: {
-        textDecorationLine: 'line-through',
         color: COLORS.onSurface,
         opacity: 0.6,
     },

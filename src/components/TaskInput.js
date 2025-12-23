@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: SIZES.body,
         color: COLORS.onBackground,
+        outlineStyle: 'none', // For Web
     },
     addWrapper: {
         width: 40,

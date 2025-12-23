@@ -8,7 +8,7 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function ExplorationScreen() {
-    const { tasks, addTask, toggleTask } = useTasks('@exploration_tasks');
+    const { tasks, addTask, toggleTask } = useTasks('@exploration_tasks', { deleteOnComplete: false });
 
     return (
         <View style={styles.container}>

@@ -10,6 +10,9 @@ import { COLORS, SIZES } from '../constants/theme';
 export default function ExplorationScreen() {
     const { tasks, addTask, toggleTask } = useTasks('@exploration_tasks', { deleteOnComplete: false });
 
+    // Find the index of the first completed task to insert a gap
+    const firstCompletedIndex = tasks.findIndex(task => task.completed);
+
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
@@ -22,11 +25,13 @@ export default function ExplorationScreen() {
                 <View style={styles.tasksWrapper}>
                     <FlatList
                         data={tasks}
-                        renderItem={({ item }) => (
-                            <TaskItem
-                                task={item}
-                                onToggle={toggleTask}
-                            />
+                        renderItem={({ item, index }) => (
+                            <View style={index === firstCompletedIndex && index > 0 ? { marginTop: 30 } : {}}>
+                                <TaskItem
+                                    task={item}
+                                    onToggle={toggleTask}
+                                />
+                            </View>
                         )}
                         keyExtractor={item => item.id}
                         contentContainerStyle={styles.taskList}

@@ -54,10 +54,28 @@ export const useTasks = (storageKey, { deleteOnComplete = true } = {}) => {
             // New behavior: Mark compliant, then sort (move to bottom)
             setTasks(prevTasks => {
                 const updatedTasks = prevTasks.map(task =>
-                    task.id === id ? { ...task, completed: !task.completed } : task
+                    task.id === id ? {
+                        ...task,
+                        completed: !task.completed,
+                        completedAt: !task.completed ? Date.now() : null // Set timestamp if completing
+                    } : task
                 );
-                // Sort: Uncompleted (false) first, Completed (true) last
-                return updatedTasks.sort((a, b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1));
+
+                // Sort: 
+                // 1. Uncompleted (false) first
+                // 2. Completed: Sort by completedAt ascending (oldest completed at top? No, we want newly ticked at bottom)
+                // Wait, if I tick it now, it has largest timestamp.
+                // "Go to the bottom of the ticked tasks list" -> Latest one at bottom.
+                // So Ascending completedAt.
+                return updatedTasks.sort((a, b) => {
+                    if (a.completed === b.completed) {
+                        if (a.completed) {
+                            return (a.completedAt || 0) - (b.completedAt || 0);
+                        }
+                        return 0; // Maintain order for uncompleted? Or maybe by id?
+                    }
+                    return a.completed ? 1 : -1;
+                });
             });
         }
     };

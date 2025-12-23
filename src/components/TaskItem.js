@@ -1,65 +1,74 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { COLORS, SIZES } from '../constants/theme';
+import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
-const TaskItem = ({ task, onToggle }) => {
+export default function TaskItem({ task, onToggle }) {
     return (
         <View style={styles.container}>
-            <BlurView intensity={20} tint="dark" style={styles.blurContainer}>
-                <TouchableOpacity style={styles.contentContainer} onPress={() => onToggle(task.id)}>
-                    <View style={[styles.checkbox, task.completed && styles.checkboxChecked]}>
-                        {task.completed && <Ionicons name="checkmark" size={16} color={COLORS.onPrimary} />}
-                    </View>
-                    <Text style={[styles.text, task.completed && styles.textCompleted]}>
-                        {task.text}
-                    </Text>
+            <TouchableOpacity
+                style={styles.taskContainer}
+                onPress={() => onToggle(task.id)}
+                activeOpacity={0.7}
+            >
+                <TouchableOpacity
+                    style={[styles.checkbox, task.completed && styles.checked]}
+                    onPress={() => onToggle(task.id)}
+                >
+                    {task.completed && (
+                        <Ionicons name="checkmark" size={16} color="white" />
+                    )}
                 </TouchableOpacity>
-            </BlurView>
+
+                <Text
+                    style={[
+                        styles.taskText,
+                        task.completed && styles.completedText
+                    ]}
+                >
+                    {task.text}
+                </Text>
+            </TouchableOpacity>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         marginBottom: 12,
-        borderRadius: SIZES.borderRadius,
-        overflow: 'hidden',
+        ...SHADOWS.light,
     },
-    blurContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    taskContainer: {
+        backgroundColor: COLORS.surface,
         padding: SIZES.padding,
-        backgroundColor: 'rgba(30, 30, 30, 0.6)',
-    },
-    contentContainer: {
-        flex: 1,
+        borderRadius: SIZES.radius,
         flexDirection: 'row',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'transparent', // Can be used for selection state if needed
     },
     checkbox: {
         width: 24,
         height: 24,
-        borderRadius: 12, // Circular
+        borderRadius: 12,
         borderWidth: 2,
         borderColor: COLORS.primary,
-        alignItems: 'center',
         justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 12,
     },
-    checkboxChecked: {
+    checked: {
         backgroundColor: COLORS.primary,
+        borderColor: COLORS.primary,
     },
-    text: {
-        color: COLORS.onSurface,
+    taskText: {
         fontSize: SIZES.body,
+        color: COLORS.onBackground,
         flex: 1,
-        fontWeight: '500', // Slightly bolder for iOS feel
     },
-    textCompleted: {
-        color: COLORS.gray,
+    completedText: {
+        textDecorationLine: 'line-through',
+        color: COLORS.onSurface,
+        opacity: 0.6,
     },
 });
-
-export default TaskItem;

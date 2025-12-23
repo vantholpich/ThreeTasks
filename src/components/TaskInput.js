@@ -1,85 +1,78 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View, TextInput, TouchableOpacity, Platform, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../constants/theme';
+import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
-const TaskInput = ({ onAddTask }) => {
+export default function TaskInput({ onAddTask }) {
     const [task, setTask] = useState('');
 
     const handleAddTask = () => {
-        if (task.trim().length > 0) {
+        if (task.trim()) {
             onAddTask(task);
             setTask('');
+            Keyboard.dismiss();
         }
     };
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             style={styles.container}
         >
-            <TextInput
-                style={styles.input}
-                placeholder={'Write a task'}
-                placeholderTextColor={COLORS.gray}
-                value={task}
-                onChangeText={text => setTask(text)}
-            />
-            <TouchableOpacity onPress={handleAddTask}>
-                <View style={styles.addWrapper}>
-                    <Ionicons name="add" size={30} color={COLORS.onPrimary} />
-                </View>
-            </TouchableOpacity>
+            <View style={styles.inputWrapper}>
+                <TextInput
+                    style={styles.input}
+                    placeholder={'Write a task'}
+                    placeholderTextColor={'#C0C0C0'}
+                    value={task}
+                    onChangeText={text => setTask(text)}
+                />
+                <TouchableOpacity onPress={handleAddTask} disabled={!task.trim()}>
+                    <View style={[styles.addWrapper, !task.trim() && styles.disabledWrapper]}>
+                        <Ionicons name="arrow-up" size={24} color={task.trim() ? "white" : "#AAAAAA"} />
+                    </View>
+                </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        bottom: 30,
+        bottom: 20,
         width: '100%',
+        paddingHorizontal: 20,
+        backgroundColor: 'transparent',
+    },
+    inputWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
+        backgroundColor: COLORS.surface,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 30,
+        ...SHADOWS.medium,
     },
     input: {
-        paddingVertical: 15,
-        paddingHorizontal: 15,
-        backgroundColor: COLORS.surface,
-        borderRadius: 30,
-        borderColor: COLORS.darkGray,
-        borderWidth: 1,
-        color: COLORS.onSurface,
-        width: '80%',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        flex: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        fontSize: SIZES.body,
+        color: COLORS.onBackground,
     },
     addWrapper: {
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         backgroundColor: COLORS.primary,
-        borderRadius: 30,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: COLORS.darkGray,
-        borderWidth: 1,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        marginLeft: 10,
+    },
+    disabledWrapper: {
+        backgroundColor: COLORS.background, // Or a lighter gray
     },
 });
-
-export default TaskInput;

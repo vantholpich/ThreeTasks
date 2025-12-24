@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
     },
     taskContainer: {
         backgroundColor: COLORS.surface,
-        padding: SIZES.padding,
+        padding: 5,
         borderRadius: SIZES.radius,
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1,
+        borderWidth: 0,
         borderColor: 'transparent',
         ...SHADOWS.light,
     },

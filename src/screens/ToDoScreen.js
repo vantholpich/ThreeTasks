@@ -8,7 +8,9 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function ToDoScreen() {
-    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data');
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data', { deleteOnComplete: false });
+
+    const firstCompletedIndex = tasks.findIndex(task => task.completed);
 
     return (
         <View style={styles.container}>
@@ -21,12 +23,18 @@ export default function ToDoScreen() {
                 <View style={styles.tasksWrapper}>
                     <FlatList
                         data={tasks}
-                        renderItem={({ item }) => (
-                            <TaskItem
-                                task={item}
-                                onToggle={toggleTask}
-                                onDelete={deleteTask}
-                            />
+                        renderItem={({ item, index }) => (
+                            <View>
+                                {index === firstCompletedIndex && (
+                                    <Text style={styles.sectionHeader}>Completed</Text>
+                                )}
+                                <TaskItem
+                                    task={item}
+                                    onToggle={toggleTask}
+                                    onDelete={deleteTask}
+                                    showDate={item.completed}
+                                />
+                            </View>
                         )}
                         keyExtractor={item => item.id}
                         contentContainerStyle={styles.taskList}
@@ -66,5 +74,12 @@ const styles = StyleSheet.create({
     taskList: {
         paddingTop: 10,
         paddingBottom: 20,
+    },
+    sectionHeader: {
+        fontSize: SIZES.h2,
+        fontWeight: 'bold',
+        color: COLORS.primary,
+        marginTop: 20,
+        marginBottom: 10,
     },
 });

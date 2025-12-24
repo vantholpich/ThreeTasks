@@ -5,7 +5,7 @@ import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { FadeOut } from 'react-native-reanimated';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
-export default function TaskItem({ task, onToggle, onDelete }) {
+export default function TaskItem({ task, onToggle, onDelete, showDate }) {
     const isSwiping = useRef(false);
 
     const renderRightActions = () => {
@@ -46,14 +46,21 @@ export default function TaskItem({ task, onToggle, onDelete }) {
                         )}
                     </TouchableOpacity>
 
-                    <Text
-                        style={[
-                            styles.taskText,
-                            task.completed && styles.completedText
-                        ]}
-                    >
-                        {task.text}
-                    </Text>
+                    <View style={styles.textContainer}>
+                        <Text
+                            style={[
+                                styles.taskText,
+                                task.completed && styles.completedText
+                            ]}
+                        >
+                            {task.text}
+                        </Text>
+                        {showDate && task.completedAt && (
+                            <Text style={styles.dateText}>
+                                {new Date(task.completedAt).toLocaleDateString()}
+                            </Text>
+                        )}
+                    </View>
                 </TouchableOpacity>
             </Swipeable>
         </Animated.View>
@@ -91,10 +98,18 @@ const styles = StyleSheet.create({
     taskText: {
         fontSize: SIZES.body,
         color: COLORS.onBackground,
-        flex: 1,
     },
     completedText: {
         color: COLORS.onSurface,
         opacity: 0.6,
+    },
+    textContainer: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    dateText: {
+        fontSize: 12,
+        color: COLORS.onSurface,
+        marginTop: 2,
     },
 });

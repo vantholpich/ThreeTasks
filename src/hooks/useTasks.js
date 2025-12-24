@@ -25,6 +25,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true } = {}) => {
             id: Date.now().toString(),
             text,
             completed: false,
+            createdAt: Date.now(),
         };
         setTasks(prevTasks => {
             const newTasks = [...prevTasks, newTask];

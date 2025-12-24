@@ -26,7 +26,10 @@ export default function ExplorationScreen() {
                     <FlatList
                         data={tasks}
                         renderItem={({ item, index }) => (
-                            <View style={index === firstCompletedIndex && index > 0 ? { marginTop: 30 } : {}}>
+                            <View>
+                                {index === firstCompletedIndex && (
+                                    <Text style={styles.sectionHeader}>Completed</Text>
+                                )}
                                 <TaskItem
                                     task={item}
                                     onToggle={toggleTask}
@@ -77,5 +80,12 @@ const styles = StyleSheet.create({
     taskList: {
         paddingTop: 10,
         paddingBottom: 20,
+    },
+    sectionHeader: {
+        fontSize: SIZES.h2,
+        fontWeight: 'bold',
+        color: COLORS.primary,
+        marginTop: 20,
+        marginBottom: 10,
     },
 });

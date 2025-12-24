@@ -1,42 +1,68 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
+import Animated, { FadeOut } from 'react-native-reanimated';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
-export default function TaskItem({ task, onToggle }) {
+export default function TaskItem({ task, onToggle, onDelete }) {
+    const isSwiping = useRef(false);
+
+    const renderRightActions = () => {
+        return <View style={{ width: 100 }} />;
+    };
+
     return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.taskContainer}
-                onPress={() => onToggle(task.id)}
-                activeOpacity={0.7}
+        <Animated.View
+            exiting={FadeOut.duration(1)}
+            style={styles.container}
+        >
+            <Swipeable
+                renderRightActions={renderRightActions}
+                overshootRight={false}
+                onSwipeableWillOpen={() => {
+                    isSwiping.current = true;
+                    onDelete(task.id);
+                }}
+                onSwipeableClose={() => {
+                    isSwiping.current = false;
+                }}
             >
                 <TouchableOpacity
-                    style={[styles.checkbox, task.completed && styles.checked]}
-                    onPress={() => onToggle(task.id)}
+                    activeOpacity={0.7}
+                    style={styles.taskContainer}
+                    onPress={() => {
+                        if (!isSwiping.current) {
+                            onToggle(task.id);
+                        }
+                    }}
                 >
-                    {task.completed && (
-                        <Ionicons name="checkmark" size={16} color="white" />
-                    )}
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.checkbox, task.completed && styles.checked]}
+                        onPress={() => onToggle(task.id)}
+                    >
+                        {task.completed && (
+                            <Ionicons name="checkmark" size={16} color="white" />
+                        )}
+                    </TouchableOpacity>
 
-                <Text
-                    style={[
-                        styles.taskText,
-                        task.completed && styles.completedText
-                    ]}
-                >
-                    {task.text}
-                </Text>
-            </TouchableOpacity>
-        </View>
+                    <Text
+                        style={[
+                            styles.taskText,
+                            task.completed && styles.completedText
+                        ]}
+                    >
+                        {task.text}
+                    </Text>
+                </TouchableOpacity>
+            </Swipeable>
+        </Animated.View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         marginBottom: 12,
-        ...SHADOWS.light,
     },
     taskContainer: {
         backgroundColor: COLORS.surface,
@@ -45,7 +71,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: 'transparent', // Can be used for selection state if needed
+        borderColor: 'transparent',
+        ...SHADOWS.light,
     },
     checkbox: {
         width: 24,

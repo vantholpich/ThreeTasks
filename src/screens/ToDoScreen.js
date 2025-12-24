@@ -8,7 +8,7 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function ToDoScreen() {
-    const { tasks, addTask, toggleTask } = useTasks('@three_tasks_data');
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data');
 
     return (
         <View style={styles.container}>
@@ -25,6 +25,7 @@ export default function ToDoScreen() {
                             <TaskItem
                                 task={item}
                                 onToggle={toggleTask}
+                                onDelete={deleteTask}
                             />
                         )}
                         keyExtractor={item => item.id}

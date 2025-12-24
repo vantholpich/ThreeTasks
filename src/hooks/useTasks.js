@@ -80,10 +80,15 @@ export const useTasks = (storageKey, { deleteOnComplete = true } = {}) => {
         }
     };
 
+    const deleteTask = (id) => {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+    };
+
     return {
         tasks,
         addTask,
         toggleTask,
+        deleteTask,
         loading
     };
 };

@@ -8,7 +8,7 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function ExplorationScreen() {
-    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@exploration_tasks', { deleteOnComplete: false });
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@exploration_tasks', { deleteOnComplete: false, prepend: true });
 
     // Find the index of the first completed task to insert a gap
     const firstCompletedIndex = tasks.findIndex(task => task.completed);

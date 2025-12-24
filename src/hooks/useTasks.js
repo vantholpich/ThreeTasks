@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { loadTasks, saveTasks } from '../utils/storage';
 
-export const useTasks = (storageKey, { deleteOnComplete = true } = {}) => {
+export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false } = {}) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -28,7 +28,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true } = {}) => {
             createdAt: Date.now(),
         };
         setTasks(prevTasks => {
-            const newTasks = [...prevTasks, newTask];
+            const newTasks = prepend ? [newTask, ...prevTasks] : [...prevTasks, newTask];
             // If we are not deleting on complete, we might want to ensure sort order on add?
             // But usually adding puts it at the end or top.
             // Let's assume standard append behavior for now, but if we need to enforce "ticked at bottom",

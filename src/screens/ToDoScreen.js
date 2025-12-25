@@ -10,7 +10,20 @@ import { COLORS, SIZES } from '../constants/theme';
 export default function ToDoScreen() {
     const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data', { deleteOnComplete: false });
 
-    const firstCompletedIndex = tasks.findIndex(task => task.completed);
+    const sortedTasks = React.useMemo(() => {
+        return [...tasks].sort((a, b) => {
+            if (a.completed !== b.completed) {
+                return a.completed ? 1 : -1; // Uncompleted first
+            }
+            if (a.completed) {
+                // Completed: Newest first (Descending)
+                return (b.completedAt || 0) - (a.completedAt || 0);
+            }
+            return 0; // Uncompleted: Keep original order
+        });
+    }, [tasks]);
+
+    const firstCompletedIndex = sortedTasks.findIndex(task => task.completed);
 
     return (
         <View style={styles.container}>
@@ -22,7 +35,7 @@ export default function ToDoScreen() {
 
                 <View style={styles.tasksWrapper}>
                     <FlatList
-                        data={tasks}
+                        data={sortedTasks}
                         renderItem={({ item, index }) => (
                             <View>
                                 {index === firstCompletedIndex && (

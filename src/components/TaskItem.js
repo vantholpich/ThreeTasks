@@ -55,6 +55,15 @@ export default function TaskItem({ task, onToggle, onDelete, showDate }) {
                         >
                             {task.text}
                         </Text>
+
+                        {/* Show Due Date if not completed */}
+                        {!task.completed && task.dueDate && (
+                            <Text style={styles.dateText}>
+                                {new Date(task.dueDate).toLocaleDateString()}
+                            </Text>
+                        )}
+
+                        {/* Show Completed Date if completed and showDate is true */}
                         {showDate && task.completedAt && (
                             <Text style={styles.dateText}>
                                 {new Date(task.completedAt).toLocaleDateString()}

@@ -37,6 +37,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                     ...task,
                     createdAt: new Date(task.created_at).getTime(),
                     completedAt: task.completed_at ? new Date(task.completed_at).getTime() : null,
+                    dueDate: task.due_date ? new Date(task.due_date).getTime() : null,
                 }));
 
                 setTasks(formattedTasks);
@@ -52,14 +53,20 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
         fetchTasks();
     }, [storageKey]);
 
-    const addTask = async (text) => {
+    const addTask = async (text, dueDate = null) => {
         try {
             const userId = await getUserId();
             if (!userId) return;
 
             const { data, error } = await supabase
                 .from('tasks')
-                .insert([{ text, user_id: userId, list_id: storageKey, completed: false }])
+                .insert([{
+                    text,
+                    user_id: userId,
+                    list_id: storageKey,
+                    completed: false,
+                    due_date: dueDate ? dueDate.toISOString() : null
+                }])
                 .select()
                 .single();
 
@@ -73,6 +80,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                     ...data,
                     createdAt: new Date(data.created_at).getTime(),
                     completedAt: null,
+                    dueDate: data.due_date ? new Date(data.due_date).getTime() : null,
                 };
 
                 setTasks(prevTasks => {
@@ -100,7 +108,20 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
         const taskToUpdate = tasks.find(t => t.id === id);
         if (taskToUpdate) {
             newCompleted = !taskToUpdate.completed;
-            newCompletedAt = newCompleted ? new Date().toISOString() : null;
+
+            if (newCompleted) {
+                const now = new Date();
+                const dueDate = taskToUpdate.dueDate ? new Date(taskToUpdate.dueDate) : null;
+
+                // User logic: If task is for tomorrow and finished today, completedAt should be tomorrow
+                if (dueDate && dueDate > now) {
+                    newCompletedAt = dueDate.toISOString();
+                } else {
+                    newCompletedAt = now.toISOString();
+                }
+            } else {
+                newCompletedAt = null;
+            }
         }
 
         if (deleteOnComplete) {
@@ -117,15 +138,15 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                     task.id === id ? {
                         ...task,
                         completed: newCompleted,
-                        completedAt: newCompleted ? Date.now() : null
+                        completedAt: newCompletedAt ? new Date(newCompletedAt).getTime() : null
                     } : task
                 );
 
                 return updatedTasks.sort((a, b) => {
                     if (a.completed === b.completed) {
                         if (a.completed) {
-                            const timeA = a.id === id ? Date.now() : (a.completedAt || 0);
-                            const timeB = b.id === id ? Date.now() : (b.completedAt || 0);
+                            const timeA = a.id === id ? (newCompletedAt ? new Date(newCompletedAt).getTime() : Date.now()) : (a.completedAt || 0);
+                            const timeB = b.id === id ? (newCompletedAt ? new Date(newCompletedAt).getTime() : Date.now()) : (b.completedAt || 0);
                             return timeA - timeB;
                         }
                         return 0;

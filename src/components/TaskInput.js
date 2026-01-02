@@ -160,12 +160,14 @@ const styles = StyleSheet.create({
         ...SHADOWS.medium,
     },
     input: {
-        flex: 1,
+        flexGrow: 1,
+        flexShrink: 1,        // ✅ important for iOS Safari
+        minWidth: 0,          // ✅ prevents overflow bugs
         paddingVertical: 10,
         paddingHorizontal: 10,
         fontSize: SIZES.body,
         color: COLORS.onBackground,
-        outlineStyle: 'none', // For Web
+        outlineStyle: 'none',
     },
     addWrapper: {
         width: 40,
@@ -227,14 +229,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     webDatePickerWrapper: {
-        display: 'flex',
-        alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 30,
-        border: '1px solid #eee',
-        marginRight: 10,
-        backgroundColor: COLORS.surface,
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
     },
 });

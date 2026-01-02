@@ -31,6 +31,7 @@ export default function ToDoScreen() {
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Three to-dos</Text>
+                    <Text style={styles.subtitle}>Your main to-dos for the day</Text>
                 </View>
 
                 <View style={styles.tasksWrapper}>
@@ -95,4 +96,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
     },
+    subtitle: {
+        fontSize: SIZES.body,
+        color: COLORS.onSurface,
+        marginTop: 4,
+    }
 });

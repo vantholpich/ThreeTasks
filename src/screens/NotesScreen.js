@@ -7,8 +7,8 @@ import TaskInput from '../components/TaskInput';
 import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
-export default function ExplorationScreen() {
-    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@exploration_tasks', { deleteOnComplete: false, prepend: true });
+export default function NotesScreen() {
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@notes', { deleteOnComplete: false, prepend: true });
 
     // Find the index of the first completed task to insert a gap
     const firstCompletedIndex = tasks.findIndex(task => task.completed);
@@ -18,7 +18,7 @@ export default function ExplorationScreen() {
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Extra to-dos</Text>
+                    <Text style={styles.title}>Notes</Text>
                 </View>
 
                 <View style={styles.tasksWrapper}>
@@ -27,7 +27,7 @@ export default function ExplorationScreen() {
                         renderItem={({ item, index }) => (
                             <View>
                                 {index === firstCompletedIndex && (
-                                    <Text style={styles.sectionHeader}>Completed</Text>
+                                    <Text style={styles.sectionHeader}>Archived</Text>
                                 )}
                                 <TaskItem
                                     task={item}

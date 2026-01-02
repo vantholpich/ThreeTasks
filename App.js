@@ -7,6 +7,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ToDoScreen from './src/screens/ToDoScreen';
 import ExplorationScreen from './src/screens/ExplorationScreen';
+import LifeToDoScreen from './src/screens/LifeToDoScreen';
+import NotesScreen from './src/screens/NotesScreen';
 import { COLORS } from './src/constants/theme';
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +27,10 @@ export default function App() {
                   iconName = focused ? 'list' : 'list-outline';
                 } else if (route.name === 'Exploration') {
                   iconName = focused ? 'compass' : 'compass-outline';
+                } else if (route.name === 'To-Dos for Life') {
+                  iconName = focused ? 'heart' : 'heart-outline';
+                } else if (route.name === 'Notes') {
+                  iconName = focused ? 'document-text' : 'document-text-outline';
                 }
 
                 return <Ionicons name={iconName} size={size} color={color} />;
@@ -43,6 +49,8 @@ export default function App() {
           >
             <Tab.Screen name="To-Do" component={ToDoScreen} />
             <Tab.Screen name="Exploration" component={ExplorationScreen} />
+            <Tab.Screen name="To-Dos for Life" component={LifeToDoScreen} />
+            <Tab.Screen name="Notes" component={NotesScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

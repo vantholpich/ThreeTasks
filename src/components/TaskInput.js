@@ -16,7 +16,7 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
-export default function TaskInput({ onAddTask }) {
+export default function TaskInput({ onAddTask, showDate = false }) {
     const [task, setTask] = useState('');
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -50,7 +50,8 @@ export default function TaskInput({ onAddTask }) {
         >
             <View style={styles.inputWrapper}>
                 {/* Date Picker */}
-                {Platform.OS === 'web' ? (
+                {/* Date Picker */}
+                {showDate && (Platform.OS === 'web' ? (
                     <View style={styles.webDatePickerWrapper}>
                         <ReactDatePicker
                             selected={date}
@@ -73,7 +74,7 @@ export default function TaskInput({ onAddTask }) {
                         <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
                         <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
                     </TouchableOpacity>
-                )}
+                ))}
 
                 {/* Task Input */}
                 <TextInput

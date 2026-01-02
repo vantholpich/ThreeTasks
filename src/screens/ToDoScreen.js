@@ -56,7 +56,7 @@ export default function ToDoScreen() {
                     />
                 </View>
 
-                <TaskInput onAddTask={addTask} />
+                <TaskInput onAddTask={addTask} showDate={true} />
             </SafeAreaView>
         </View>
     );

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { 
-    KeyboardAvoidingView, 
-    StyleSheet, 
-    View, 
-    TextInput, 
-    TouchableOpacity, 
-    Platform, 
-    Keyboard, 
-    Text, 
-    Modal 
+import {
+    KeyboardAvoidingView,
+    StyleSheet,
+    View,
+    TextInput,
+    TouchableOpacity,
+    Platform,
+    Keyboard,
+    Text,
+    Modal
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
 export default function TaskInput({ onAddTask }) {
@@ -49,19 +51,20 @@ export default function TaskInput({ onAddTask }) {
             <View style={styles.inputWrapper}>
                 {/* Date Picker */}
                 {Platform.OS === 'web' ? (
-                    <input
-                        type="date"
-                        value={date.toISOString().split('T')[0]}
-                        onChange={(e) => setDate(new Date(e.target.value))}
-                        style={{
-                            paddingVertical: 10,
-                            paddingHorizontal: 15,
-                            borderRadius: 30,
-                            border: '1px solid #eee',
-                            marginRight: 10,
-                            fontSize: SIZES.body,
-                        }}
-                    />
+                    <div style={styles.webDatePickerWrapper}>
+                        <ReactDatePicker
+                            selected={date}
+                            onChange={(d) => setDate(d)}
+                            dateFormat="MMM d"   // ✅ Jan 12
+                            showPopperArrow={false}
+                            customInput={
+                                <View style={styles.dateButton}>
+                                    <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
+                                    <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
+                                </View>
+                            }
+                        />
+                    </div>
                 ) : (
                     <TouchableOpacity
                         onPress={() => setShowDatePicker(true)}
@@ -222,5 +225,16 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: SIZES.body,
         fontWeight: 'bold',
+    },
+    webDatePickerWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 30,
+        border: '1px solid #eee',
+        marginRight: 10,
+        backgroundColor: COLORS.surface,
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
     },
 });

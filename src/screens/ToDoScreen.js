@@ -46,7 +46,7 @@ export default function ToDoScreen() {
                                     task={item}
                                     onToggle={toggleTask}
                                     onDelete={deleteTask}
-                                    showDate={item.completed}
+                                    showDate={true}
                                 />
                             </View>
                         )}

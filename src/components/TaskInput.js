@@ -51,7 +51,7 @@ export default function TaskInput({ onAddTask }) {
             <View style={styles.inputWrapper}>
                 {/* Date Picker */}
                 {Platform.OS === 'web' ? (
-                    <div style={styles.webDatePickerWrapper}>
+                    <View style={styles.webDatePickerWrapper}>
                         <ReactDatePicker
                             selected={date}
                             onChange={(d) => setDate(d)}
@@ -64,7 +64,7 @@ export default function TaskInput({ onAddTask }) {
                                 </View>
                             }
                         />
-                    </div>
+                    </View>
                 ) : (
                     <TouchableOpacity
                         onPress={() => setShowDatePicker(true)}
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderRightColor: '#eee',
         marginRight: 5,
+        flexShrink: 0,
     },
     dateButtonText: {
         marginLeft: 5,
@@ -229,5 +230,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     webDatePickerWrapper: {
+        flexShrink: 0,
     },
 });

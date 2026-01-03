@@ -16,7 +16,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                 .select('*')
                 .eq('user_id', userId)
                 .eq('list_id', storageKey)
-                .order('created_at', { ascending: true });
+                .order('created_at', { ascending: !prepend });
 
             if (error) {
                 console.error('Error fetching tasks:', error);

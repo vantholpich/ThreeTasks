@@ -1,0 +1,37 @@
+/* React DatePicker — full width, auto height */
+
+.react-datepicker {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.react-datepicker__month-container {
+    width: 100%;
+    float: none;
+}
+
+.react-datepicker__header {
+    background-color: transparent;
+    border-bottom: 1px solid #eee;
+}
+
+.react-datepicker__month {
+    margin: 0.4rem;
+}
+
+.react-datepicker__week,
+.react-datepicker__day-names {
+    display: flex;
+    justify-content: space-around;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+    width: 2.5rem;
+    line-height: 2.5rem;
+    margin: 0;
+}

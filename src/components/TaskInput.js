@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './datepicker.css';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
 export default function TaskInput({ onAddTask, showDate = false }) {
@@ -232,8 +233,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignItems: 'center',
-        // width: 'auto', // Let content define width
-        // maxWidth: 400,
+        width: '90%',
+        maxWidth: 400,
         ...SHADOWS.medium,
     },
     iosPicker: {

@@ -8,7 +8,8 @@ import {
     Platform,
     Keyboard,
     Text,
-    Modal
+    Modal,
+    Pressable
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -51,22 +52,7 @@ export default function TaskInput({ onAddTask, showDate = false }) {
             <View style={styles.inputWrapper}>
                 {/* Date Picker */}
                 {/* Date Picker */}
-                {showDate && (Platform.OS === 'web' ? (
-                    <View style={styles.webDatePickerWrapper}>
-                        <ReactDatePicker
-                            selected={date}
-                            onChange={(d) => setDate(d)}
-                            dateFormat="MMM d"   // ✅ Jan 12
-                            showPopperArrow={false}
-                            customInput={
-                                <View style={styles.dateButton}>
-                                    <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
-                                    <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
-                                </View>
-                            }
-                        />
-                    </View>
-                ) : (
+                {showDate && (
                     <TouchableOpacity
                         onPress={() => setShowDatePicker(true)}
                         style={styles.dateButton}
@@ -74,7 +60,7 @@ export default function TaskInput({ onAddTask, showDate = false }) {
                         <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
                         <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
                     </TouchableOpacity>
-                ))}
+                )}
 
                 {/* Task Input */}
                 <TextInput
@@ -136,6 +122,44 @@ export default function TaskInput({ onAddTask, showDate = false }) {
                             </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
+                </Modal>
+            )}
+
+            {Platform.OS === 'web' && (
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showDatePicker}
+                    onRequestClose={() => setShowDatePicker(false)}
+                >
+                    <Pressable
+                        style={styles.modalOverlay}
+                        onPress={() => setShowDatePicker(false)}
+                    >
+                        <Pressable
+                            style={styles.modalContent}
+                            onPress={(e) => {
+                                // Stop propagation for web to prevent closing when clicking content
+                                if (Platform.OS === 'web' && e.stopPropagation) {
+                                    e.stopPropagation();
+                                }
+                            }}
+                        >
+                            <ReactDatePicker
+                                selected={date}
+                                onChange={(d) => {
+                                    setDate(d);
+                                }}
+                                inline
+                            />
+                            <TouchableOpacity
+                                style={styles.doneButton}
+                                onPress={() => setShowDatePicker(false)}
+                            >
+                                <Text style={styles.doneButtonText}>Done</Text>
+                            </TouchableOpacity>
+                        </Pressable>
+                    </Pressable>
                 </Modal>
             )}
         </KeyboardAvoidingView>
@@ -206,10 +230,10 @@ const styles = StyleSheet.create({
     modalContent: {
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 20,
+        padding: 10,
         alignItems: 'center',
-        width: '90%',
-        maxWidth: 400,
+        // width: 'auto', // Let content define width
+        // maxWidth: 400,
         ...SHADOWS.medium,
     },
     iosPicker: {

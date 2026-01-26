@@ -59,7 +59,7 @@ export default function TaskInput({ onAddTask, showDate = false }) {
                         style={styles.dateButton}
                     >
                         <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
-                        <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
+                      <Text style={styles.dateButtonText}>{formatDate(date)}</Text>  
                     </TouchableOpacity>
                 )}
 

@@ -16,6 +16,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                 .select('*')
                 .eq('user_id', userId)
                 .eq('list_id', storageKey)
+                .is('deleted_at', null)
                 .order('created_at', { ascending: !prepend });
 
             if (error) {
@@ -183,7 +184,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
         try {
             const { error } = await supabase
                 .from('tasks')
-                .delete()
+                .update({ deleted_at: new Date().toISOString() })
                 .eq('id', id);
 
             if (error) {

@@ -5,6 +5,16 @@ import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { FadeOut } from 'react-native-reanimated';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
+// Helper for DD/MM/YYYY format
+const formatDate = (timestamp) => {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+};
+
 export default function TaskItem({ task, onToggle, onDelete, showDate }) {
     const isSwiping = useRef(false);
 
@@ -59,14 +69,14 @@ export default function TaskItem({ task, onToggle, onDelete, showDate }) {
                         {/* Show Due Date if not completed */}
                         {showDate && !task.completed && task.dueDate && (
                             <Text style={styles.dateText}>
-                                {new Date(task.dueDate).toLocaleDateString()}
+                                {formatDate(task.dueDate)}
                             </Text>
                         )}
 
                         {/* Show Completed Date if completed and showDate is true */}
                         {showDate && task.completedAt && (
                             <Text style={styles.dateText}>
-                                {new Date(task.completedAt).toLocaleDateString()}
+                                {formatDate(task.completedAt)}
                             </Text>
                         )}
                     </View>

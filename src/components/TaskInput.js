@@ -41,7 +41,11 @@ export default function TaskInput({ onAddTask, showDate = false }) {
     };
 
     const formatDate = (date) => {
-        return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        if (!date) return '';
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
     };
 
     return (
@@ -59,7 +63,7 @@ export default function TaskInput({ onAddTask, showDate = false }) {
                         style={styles.dateButton}
                     >
                         <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
-                      <Text style={styles.dateButtonText}>{formatDate(date)}</Text>  
+                        <Text style={styles.dateButtonText}>{formatDate(date)}</Text>
                     </TouchableOpacity>
                 )}
 

@@ -114,8 +114,8 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                 const now = new Date();
                 const dueDate = taskToUpdate.dueDate ? new Date(taskToUpdate.dueDate) : null;
 
-                // User logic: If task is for tomorrow and finished today, completedAt should be tomorrow
-                if (dueDate && dueDate > now) {
+                // User logic: If task has a due date, usage that as the completion date
+                if (dueDate) {
                     newCompletedAt = dueDate.toISOString();
                 } else {
                     newCompletedAt = now.toISOString();

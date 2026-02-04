@@ -8,7 +8,7 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function ToDoScreen() {
-    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data', { deleteOnComplete: false });
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@three_tasks_data', { deleteOnComplete: false, useDueDateAsCompletionDate: true });
 
     const sortedTasks = React.useMemo(() => {
         return [...tasks].sort((a, b) => {

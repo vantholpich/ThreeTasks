@@ -8,7 +8,7 @@ import { useTasks } from '../hooks/useTasks';
 import { COLORS, SIZES } from '../constants/theme';
 
 export default function LifeToDoScreen() {
-    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@life_tasks', { deleteOnComplete: false, prepend: true });
+    const { tasks, addTask, toggleTask, deleteTask } = useTasks('@life_tasks', { deleteOnComplete: false, prepend: true, useDueDateAsCompletionDate: false });
 
     // Find the index of the first completed task to insert a gap
     const firstCompletedIndex = tasks.findIndex(task => task.completed);

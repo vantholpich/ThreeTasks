@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { getUserId } from '../utils/identity';
 
-export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false } = {}) => {
+export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false, useDueDateAsCompletionDate = false } = {}) => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -114,8 +114,8 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false 
                 const now = new Date();
                 const dueDate = taskToUpdate.dueDate ? new Date(taskToUpdate.dueDate) : null;
 
-                // User logic: If task has a due date, usage that as the completion date
-                if (dueDate) {
+                // User logic: If task has a due date AND the flag is set, usage that as the completion date
+                if (dueDate && useDueDateAsCompletionDate) {
                     newCompletedAt = dueDate.toISOString();
                 } else {
                     newCompletedAt = now.toISOString();

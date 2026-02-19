@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, StatusBar, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Calendar } from 'react-native-calendars';
 
 import TaskItem from '../components/TaskItem';
 import TaskInput from '../components/TaskInput';
@@ -25,13 +26,79 @@ export default function ToDoScreen() {
 
     const firstCompletedIndex = sortedTasks.findIndex(task => task.completed);
 
+    const markedDates = React.useMemo(() => {
+        const dates = {};
+        const tasksByDate = {};
+
+        // Group tasks by date
+        tasks.forEach(task => {
+            if (task.dueDate) {
+                const date = new Date(task.dueDate).toISOString().split('T')[0];
+                if (!tasksByDate[date]) {
+                    tasksByDate[date] = [];
+                }
+                tasksByDate[date].push(task);
+            }
+        });
+
+        // Check completion status for each date
+        Object.keys(tasksByDate).forEach(date => {
+            const tasksOnDate = tasksByDate[date];
+            if (tasksOnDate.length > 0) {
+                const allCompleted = tasksOnDate.every(t => t.completed);
+                if (allCompleted) {
+                    dates[date] = {
+                        marked: true,
+                        dotColor: COLORS.primary,
+                        activeOpacity: 0
+                    };
+                }
+            }
+        });
+
+        return dates;
+    }, [tasks]);
+
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Three to-dos</Text>
+                    <Text style={styles.title}>Three todos</Text>
                     <Text style={styles.subtitle}>Your main to-dos for the day</Text>
+                </View>
+
+                {/* Calendar View */}
+                <View style={styles.calendarContainer}>
+                    <Calendar
+                        markingType={'simple'}
+                        markedDates={markedDates}
+                        theme={{
+                            backgroundColor: COLORS.background,
+                            calendarBackground: COLORS.background,
+                            textSectionTitleColor: COLORS.onSurface,
+                            selectedDayBackgroundColor: COLORS.primary,
+                            selectedDayTextColor: '#ffffff',
+                            todayTextColor: COLORS.primary,
+                            dayTextColor: COLORS.onBackground,
+                            textDisabledColor: '#d9e1e8',
+                            dotColor: COLORS.primary,
+                            selectedDotColor: '#ffffff',
+                            arrowColor: COLORS.primary,
+                            disabledArrowColor: '#d9e1e8',
+                            monthTextColor: COLORS.onBackground,
+                            indicatorColor: COLORS.primary,
+                            textDayFontFamily: 'System',
+                            textMonthFontFamily: 'System',
+                            textDayHeaderFontFamily: 'System',
+                            textDayFontWeight: '300',
+                            textMonthFontWeight: 'bold',
+                            textDayHeaderFontWeight: '300',
+                            textDayFontSize: 14,
+                            textMonthFontSize: 16,
+                            textDayHeaderFontSize: 14
+                        }}
+                    />
                 </View>
 
                 <View style={styles.tasksWrapper}>
@@ -80,6 +147,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: COLORS.onBackground,
     },
+    subtitle: {
+        fontSize: SIZES.body,
+        color: COLORS.onSurface,
+        marginTop: 4,
+    },
+    calendarContainer: {
+        paddingHorizontal: 10,
+        marginBottom: 10,
+    },
     tasksWrapper: {
         flex: 1,
         paddingHorizontal: 20,
@@ -95,10 +171,5 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
         marginTop: 20,
         marginBottom: 10,
-    },
-    subtitle: {
-        fontSize: SIZES.body,
-        color: COLORS.onSurface,
-        marginTop: 4,
     }
 });

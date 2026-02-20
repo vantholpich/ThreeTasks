@@ -33,11 +33,17 @@ export default function ToDoScreen() {
         // Group tasks by date
         tasks.forEach(task => {
             if (task.dueDate) {
-                const date = new Date(task.dueDate).toISOString().split('T')[0];
-                if (!tasksByDate[date]) {
-                    tasksByDate[date] = [];
+                let dateStr = '';
+                if (typeof task.dueDate === 'string') {
+                    dateStr = task.dueDate.split('T')[0];
+                } else {
+                    dateStr = new Date(task.dueDate).toISOString().split('T')[0];
                 }
-                tasksByDate[date].push(task);
+
+                if (!tasksByDate[dateStr]) {
+                    tasksByDate[dateStr] = [];
+                }
+                tasksByDate[dateStr].push(task);
             }
         });
 

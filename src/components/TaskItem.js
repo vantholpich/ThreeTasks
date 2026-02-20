@@ -6,9 +6,16 @@ import Animated, { FadeOut } from 'react-native-reanimated';
 import { COLORS, SIZES, SHADOWS } from '../constants/theme';
 
 // Helper for DD/MM/YYYY format
-const formatDate = (timestamp) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
+const formatDate = (dateValue) => {
+    if (!dateValue) return '';
+
+    // Pure "YYYY-MM-DD" string parsing to avoid timezone shifts
+    if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = dateValue.split('-');
+        return `${day}/${month}/${year}`;
+    }
+
+    const date = new Date(dateValue);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();

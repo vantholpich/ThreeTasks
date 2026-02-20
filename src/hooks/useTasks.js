@@ -38,7 +38,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false,
                     ...task,
                     createdAt: new Date(task.created_at).getTime(),
                     completedAt: task.completed_at ? new Date(task.completed_at).getTime() : null,
-                    dueDate: task.due_date ? new Date(task.due_date).getTime() : null,
+                    dueDate: task.due_date ? task.due_date.split('T')[0] : null,
                 }));
 
                 setTasks(formattedTasks);
@@ -59,6 +59,8 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false,
             const userId = await getUserId();
             if (!userId) return;
 
+            const dateString = dueDate ? `${dueDate.getFullYear()}-${String(dueDate.getMonth() + 1).padStart(2, '0')}-${String(dueDate.getDate()).padStart(2, '0')}` : null;
+
             const { data, error } = await supabase
                 .from('tasks')
                 .insert([{
@@ -66,7 +68,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false,
                     user_id: userId,
                     list_id: storageKey,
                     completed: false,
-                    due_date: dueDate ? dueDate.toISOString() : null
+                    due_date: dateString
                 }])
                 .select()
                 .single();
@@ -81,7 +83,7 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false,
                     ...data,
                     createdAt: new Date(data.created_at).getTime(),
                     completedAt: null,
-                    dueDate: data.due_date ? new Date(data.due_date).getTime() : null,
+                    dueDate: data.due_date ? data.due_date.split('T')[0] : null,
                 };
 
                 setTasks(prevTasks => {
@@ -112,11 +114,12 @@ export const useTasks = (storageKey, { deleteOnComplete = true, prepend = false,
 
             if (newCompleted) {
                 const now = new Date();
-                const dueDate = taskToUpdate.dueDate ? new Date(taskToUpdate.dueDate) : null;
 
                 // User logic: If task has a due date AND the flag is set, usage that as the completion date
-                if (dueDate && useDueDateAsCompletionDate) {
-                    newCompletedAt = dueDate.toISOString();
+                if (taskToUpdate.dueDate && useDueDateAsCompletionDate) {
+                    const [year, month, day] = taskToUpdate.dueDate.split('-');
+                    const completionDate = new Date(year, month - 1, day, 12, 0, 0);
+                    newCompletedAt = completionDate.toISOString();
                 } else {
                     newCompletedAt = now.toISOString();
                 }

@@ -10,6 +10,7 @@ import ExplorationScreen from './src/screens/ExplorationScreen';
 import LifeToDoScreen from './src/screens/LifeToDoScreen';
 import NotesScreen from './src/screens/NotesScreen';
 import { COLORS } from './src/constants/theme';
+import { FeedbackWidget } from 'react-native-feedback-widget';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,7 @@ export default function App() {
             <Tab.Screen name="Notes" component={NotesScreen} />
           </Tab.Navigator>
         </NavigationContainer>
+        <FeedbackWidget />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

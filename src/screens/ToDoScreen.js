@@ -3,6 +3,8 @@ import { StyleSheet, View, FlatList, StatusBar, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar } from 'react-native-calendars';
 
+
+
 import TaskItem from '../components/TaskItem';
 import TaskInput from '../components/TaskInput';
 import { useTasks } from '../hooks/useTasks';
@@ -128,7 +130,6 @@ export default function ToDoScreen() {
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
-
                 <TaskInput onAddTask={addTask} showDate={true} />
             </SafeAreaView>
         </View>

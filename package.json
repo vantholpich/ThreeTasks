@@ -29,6 +29,8 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-calendars": "^1.1314.0",
+    "react-native-feedback-board": "github:vantholpich/FeedbackWidgetLibrary",
+    "react-native-feedback-widget": "github:vantholpich/ExtractedLibraryFeedbackWidget",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-get-random-values": "~1.11.0",
     "react-native-reanimated": "~4.1.1",
@@ -36,8 +38,14 @@
     "react-native-screens": "~4.16.0",
     "react-native-url-polyfill": "^3.0.0",
     "react-native-web": "^0.21.0",
+    "react-native-webview": "^13.16.0",
     "react-native-worklets": "0.5.1",
+    "rnfeedbackwidget": "github:vantholpich/FeedbackWidgetLibrary",
     "uuid": "^13.0.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@types/react": "~19.1.10",
+    "typescript": "~5.9.2"
+  }
 }

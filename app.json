@@ -2,6 +2,7 @@
   "expo": {
     "name": "Threetodos",
     "slug": "Threetodos",
+    "scheme": "threetodos",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,7 +37,8 @@
     },
     "plugins": [
       "expo-font",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-router"
     ]
   }
 }

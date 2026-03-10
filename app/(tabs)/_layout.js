@@ -1,53 +1,23 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../../src/constants/theme';
-import { Platform } from 'react-native';
+import { NativeTabs, Icon } from 'expo-router/unstable-native-tabs';
 
 export default function TabLayout() {
     return (
-        <NativeTabs
-            screenOptions={{
-                tabBarActiveTintColor: COLORS.primary,
-                tabBarInactiveTintColor: COLORS.onSurface,
-                headerShown: false,
-            }}
-        >
-            <NativeTabs.Screen
-                name="index"
-                options={{
-                    title: 'To-Do',
-                    tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'list' : 'list-outline'} size={24} color={color} />
-                    ),
-                }}
-            />
-            <NativeTabs.Screen
-                name="exploration"
-                options={{
-                    title: 'Exploration',
-                    tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'compass' : 'compass-outline'} size={24} color={color} />
-                    ),
-                }}
-            />
-            <NativeTabs.Screen
-                name="life"
-                options={{
-                    title: 'To-Dos for Life',
-                    tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'heart' : 'heart-outline'} size={24} color={color} />
-                    ),
-                }}
-            />
-            <NativeTabs.Screen
-                name="notes"
-                options={{
-                    title: 'Notes',
-                    tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'document-text' : 'document-text-outline'} size={24} color={color} />
-                    ),
-                }}
-            />
+        <NativeTabs>
+            <NativeTabs.Trigger name="index">
+                <Icon sf={{ default: 'list.bullet', selected: 'list.bullet.indent' }} md="list" />
+            </NativeTabs.Trigger>
+
+            <NativeTabs.Trigger name="exploration">
+                <Icon sf={{ default: 'compass', selected: 'compass.fill' }} md="explore" />
+            </NativeTabs.Trigger>
+
+            <NativeTabs.Trigger name="life">
+                <Icon sf={{ default: 'heart', selected: 'heart.fill' }} md="favorite" />
+            </NativeTabs.Trigger>
+
+            <NativeTabs.Trigger name="notes">
+                <Icon sf={{ default: 'doc.text', selected: 'doc.text.fill' }} md="description" />
+            </NativeTabs.Trigger>
         </NativeTabs>
     );
 }
